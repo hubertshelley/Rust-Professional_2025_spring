@@ -2,13 +2,13 @@
   "exercises": [
     {
       "name": "algorithm1.rs",
-      "result": false,
-      "score": 0
+      "result": true,
+      "score": 1
     },
     {
       "name": "algorithm2.rs",
-      "result": false,
-      "score": 0
+      "result": true,
+      "score": 1
     },
     {
       "name": "algorithm3.rs",
@@ -153,9 +153,9 @@
   ],
   "statistics": {
     "total_exercises": 30,
-    "total_successes": 0,
-    "total_failures": 30,
-    "total_score": 0,
-    "total_time": 5
+    "total_successes": 2,
+    "total_failures": 28,
+    "total_score": 2,
+    "total_time": 7
   }
 }

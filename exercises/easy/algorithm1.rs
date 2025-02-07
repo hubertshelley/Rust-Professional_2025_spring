@@ -211,5 +211,3 @@ mod tests {
         }
     }
 }
-
-fn main() {}

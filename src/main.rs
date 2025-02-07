@@ -1,10 +1,9 @@
 use serde::{Deserialize, Serialize};
-use std::fs::File;
-use std::io::{self};
-use std::path::PathBuf;
+use std::fs::{self, File};
+use std::io;
+use std::path::{Path, PathBuf};
 use std::process::{exit, Command};
 use std::time::Instant;
-use std::io::{self, Write};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 struct Exercise {
@@ -145,17 +144,16 @@ fn evaluate_single_file(file_path: &PathBuf) -> bool {
 
     // 编译测试文件
     let compile_output = Command::new("rustc")
-        .arg("--test")  // 使用 rustc --test 进行编译
+        .arg("--test") // 使用 rustc --test 进行编译
         .arg(file_path)
         .arg("-o")
-        .arg(&test_binary)  // 指定输出文件
+        .arg(&test_binary) // 指定输出文件
         .output();
 
     if let Ok(output) = compile_output {
         if output.status.success() {
             // 编译成功，运行测试二进制文件
-            let test_output = Command::new(&test_binary)
-                .output();
+            let test_output = Command::new(&test_binary).output();
 
             let test_passed = match test_output {
                 Ok(test_run) => {
@@ -175,23 +173,29 @@ fn evaluate_single_file(file_path: &PathBuf) -> bool {
 
             // 删除测试二进制文件
             if let Err(e) = fs::remove_file(&test_binary) {
-                eprintln!("Failed to remove test binary {}: {}", test_binary.display(), e);
+                eprintln!(
+                    "Failed to remove test binary {}: {}",
+                    test_binary.display(),
+                    e
+                );
             } else {
-                println!("Successfully removed test binary: {}", test_binary.display());
+                println!(
+                    "Successfully removed test binary: {}",
+                    test_binary.display()
+                );
             }
 
-            return test_passed;
+            test_passed
         } else {
             // 编译失败
             eprintln!("\x1b[31m{}: COMPILATION FAILED\x1b[0m", file_path.display());
-            return false;
+            false
         }
     } else {
         eprintln!("Error executing rustc --test for {}", file_path.display());
-        return false;
+        false
     }
 }
-
 
 // 评测 Cargo 项目
 fn evaluate_cargo_project(proj_path: &PathBuf) -> bool {
@@ -226,14 +230,17 @@ fn run_cargo_command(proj_path: &PathBuf, command: &str) -> bool {
 }
 
 // 清理 target 目录
-fn clean_target_directory(proj_path: &PathBuf) {
+fn clean_target_directory(proj_path: &Path) {
     let target_dir = proj_path.join("target");
 
     if target_dir.exists() {
         if let Err(e) = fs::remove_dir_all(&target_dir) {
             eprintln!("Failed to clean up target directory: {}", e);
         } else {
-            println!("Successfully cleaned up target directory in: {}", proj_path.display());
+            println!(
+                "Successfully cleaned up target directory in: {}",
+                proj_path.display()
+            );
         }
     }
 }

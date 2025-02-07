@@ -1,11 +1,11 @@
 /*
     Nth Fibonacci Number
-    Implement a function to calculate the `n`th Fibonacci number. 
+    Implement a function to calculate the `n`th Fibonacci number.
     The Fibonacci sequence is defined as follows:
     F(0) = 0, F(1) = 1, F(n) = F(n-1) + F(n-2) for n > 1.
 
     You need to implement the function `fib(n: i32) -> i32` to return the `n`th Fibonacci number.
-    
+
     Hint: Consider using matrix exponentiation to solve the problem in O(log n) time complexity.
 */
 
