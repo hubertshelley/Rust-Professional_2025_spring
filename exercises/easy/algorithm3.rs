@@ -4,8 +4,17 @@
     you can use bubble sorting, insertion sorting, heap sorting, etc.
 */
 
-fn sort<T>(array: &mut [T]) {
-    //TODO
+fn sort<T: Ord + Clone>(array: &mut [T]) {
+    let n = array.len();
+    for i in 0..n {
+        let k = array[i].clone();
+        let mut j = i;
+        while j > 0 && array[j - 1] > k {
+            array[j] = array[j - 1].clone();
+            j -= 1;
+        }
+        array[j] = k;
+    }
 }
 #[cfg(test)]
 mod tests {
@@ -30,5 +39,3 @@ mod tests {
         assert_eq!(vec, vec![11, 22, 33, 44, 55, 66, 77, 88, 99]);
     }
 }
-
-fn main() {}
