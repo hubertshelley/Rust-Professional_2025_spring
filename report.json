@@ -12,18 +12,18 @@
     },
     {
       "name": "algorithm3.rs",
-      "result": false,
-      "score": 0
+      "result": true,
+      "score": 1
     },
     {
       "name": "algorithm4.rs",
-      "result": false,
-      "score": 0
+      "result": true,
+      "score": 1
     },
     {
       "name": "algorithm5.rs",
-      "result": false,
-      "score": 0
+      "result": true,
+      "score": 1
     },
     {
       "name": "algorithm6.rs",
@@ -153,9 +153,9 @@
   ],
   "statistics": {
     "total_exercises": 30,
-    "total_successes": 2,
-    "total_failures": 28,
-    "total_score": 2,
-    "total_time": 7
+    "total_successes": 5,
+    "total_failures": 25,
+    "total_score": 5,
+    "total_time": 10
   }
 }
