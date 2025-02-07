@@ -1,8 +1,8 @@
 use serde::{Deserialize, Serialize};
-use std::fs::{self, File};
-use std::path::{Path, PathBuf};
-use std::io::{self, Write};
-use std::process::{Command, exit};
+use std::fs::File;
+use std::io::{self};
+use std::path::PathBuf;
+use std::process::{exit, Command};
 use std::time::Instant;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -10,8 +10,8 @@ struct Exercise {
     name: String,
     path: String,
     #[serde(rename = "type")]
-    exercise_type: String,  
-    score: i32, 
+    exercise_type: String,
+    score: i32,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -25,7 +25,7 @@ struct ExerciseConfig {
 struct ExerciseResult {
     name: String,
     result: bool,
-    score: i32, 
+    score: i32,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -33,7 +33,7 @@ struct Statistics {
     total_exercises: usize,
     total_successes: usize,
     total_failures: usize,
-    total_score: i32, 
+    total_score: i32,
     total_time: u64,
 }
 
@@ -42,7 +42,6 @@ struct Report {
     exercises: Vec<ExerciseResult>,
     statistics: Statistics,
 }
-
 
 fn main() {
     let args: Vec<String> = std::env::args().collect();
@@ -69,31 +68,27 @@ fn main() {
             total_exercises: 0,
             total_successes: 0,
             total_failures: 0,
-            total_score: 0, 
+            total_score: 0,
             total_time: 0,
         },
     };
 
-
     evaluate_exercises_from_config(mode, config, &mut report);
 
-    
     report.statistics.total_time = start_time.elapsed().as_secs();
-    report.statistics.total_exercises = report.statistics.total_successes + report.statistics.total_failures;
+    report.statistics.total_exercises =
+        report.statistics.total_successes + report.statistics.total_failures;
 
-    
     println!("\nSummary:");
     println!("Total exercises: {}", report.statistics.total_exercises);
     println!("Total successes: {}", report.statistics.total_successes);
     println!("Total failures: {}", report.statistics.total_failures);
-    println!("Total score: {}", report.statistics.total_score); 
+    println!("Total score: {}", report.statistics.total_score);
 
-    
     if let Err(e) = save_report_to_json("report.json", &report) {
         eprintln!("Error saving report: {}", e);
     }
 }
-
 
 fn load_exercise_config(file_path: &str) -> Result<ExerciseConfig, io::Error> {
     let file = File::open(file_path)?;
@@ -101,21 +96,19 @@ fn load_exercise_config(file_path: &str) -> Result<ExerciseConfig, io::Error> {
     Ok(config)
 }
 
-
 fn evaluate_exercises_from_config(mode: &str, config: ExerciseConfig, report: &mut Report) {
     let all_exercises = [config.easy, config.normal, config.hard].concat();
-    
+
     for exercise in all_exercises {
         println!("\nEvaluating {}: {}", exercise.exercise_type, exercise.name);
         let result = evaluate_exercise(&exercise);
 
-        
         let score = if result { exercise.score } else { 0 };
 
         report.exercises.push(ExerciseResult {
             name: exercise.name.clone(),
             result,
-            score, 
+            score,
         });
 
         if result {
@@ -124,7 +117,6 @@ fn evaluate_exercises_from_config(mode: &str, config: ExerciseConfig, report: &m
             report.statistics.total_failures += 1;
         }
 
-        
         report.statistics.total_score += score;
 
         if mode == "watch" && !ask_to_continue() {
@@ -132,7 +124,6 @@ fn evaluate_exercises_from_config(mode: &str, config: ExerciseConfig, report: &m
         }
     }
 }
-
 
 fn evaluate_exercise(exercise: &Exercise) -> bool {
     let exercise_path = PathBuf::from(&format!("./exercises/{}", exercise.path));
@@ -146,11 +137,8 @@ fn evaluate_exercise(exercise: &Exercise) -> bool {
     }
 }
 
-
 fn evaluate_single_file(file_path: &PathBuf) -> bool {
-    let output = Command::new("rustc")
-        .arg(file_path)
-        .output();
+    let output = Command::new("rustc").arg(file_path).output();
 
     match output {
         Ok(out) => {
@@ -169,7 +157,6 @@ fn evaluate_single_file(file_path: &PathBuf) -> bool {
     }
 }
 
-
 fn evaluate_cargo_project(proj_path: &PathBuf) -> bool {
     let build_success = run_cargo_command(proj_path, "build");
     let test_success = run_cargo_command(proj_path, "test");
@@ -186,7 +173,6 @@ fn evaluate_cargo_project(proj_path: &PathBuf) -> bool {
     passed
 }
 
-
 fn run_cargo_command(proj_path: &PathBuf, command: &str) -> bool {
     let output = Command::new("cargo")
         .arg(command)
@@ -199,14 +185,12 @@ fn run_cargo_command(proj_path: &PathBuf, command: &str) -> bool {
     }
 }
 
-
 fn ask_to_continue() -> bool {
     let mut input = String::new();
     println!("\nPress any key to continue, or 'q' to quit.");
     io::stdin().read_line(&mut input).unwrap();
     input.trim().to_lowercase() != "q"
 }
-
 
 fn save_report_to_json(file_name: &str, report: &Report) -> io::Result<()> {
     let file = File::create(file_name)?;
