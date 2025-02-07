@@ -11,3 +11,82 @@ colored = "2.0"
 termion = "1.5"
 log = "0.4"
 log4rs = "1.0"
+#[[bin]]
+#name = "algorithm1"
+#path = "exercises/easy/algorithm1.rs"
+#
+#[[bin]]
+#name = "algorithm2"
+#path = "exercises/easy/algorithm2.rs"
+#
+#[[bin]]
+#name = "algorithm3"
+#path = "exercises/easy/algorithm3.rs"
+#
+#[[bin]]
+#name = "algorithm4"
+#path = "exercises/easy/algorithm4.rs"
+#
+#[[bin]]
+#name = "algorithm5"
+#path = "exercises/easy/algorithm5.rs"
+#
+#[[bin]]
+#name = "algorithm6"
+#path = "exercises/easy/algorithm6.rs"
+#
+#[[bin]]
+#name = "algorithm7"
+#path = "exercises/easy/algorithm7.rs"
+#
+#[[bin]]
+#name = "algorithm8"
+#path = "exercises/easy/algorithm8.rs"
+#
+#[[bin]]
+#name = "algorithm9"
+#path = "exercises/easy/algorithm9.rs"
+#
+#[[bin]]
+#name = "algorithm10"
+#path = "exercises/easy/algorithm10.rs"
+#
+#[[bin]]
+#name = "algorithm11"
+#path = "exercises/easy/algorithm11.rs"
+#
+#[[bin]]
+#name = "algorithm12"
+#path = "exercises/easy/algorithm12.rs"
+#
+#[[bin]]
+#name = "algorithm13"
+#path = "exercises/easy/algorithm13.rs"
+#
+#[[bin]]
+#name = "algorithm14"
+#path = "exercises/easy/algorithm14.rs"
+#
+#[[bin]]
+#name = "algorithm15"
+#path = "exercises/easy/algorithm15.rs"
+#
+#[[bin]]
+#name = "algorithm16"
+#path = "exercises/easy/algorithm16.rs"
+#
+#[[bin]]
+#name = "algorithm17"
+#path = "exercises/easy/algorithm17.rs"
+#
+#[[bin]]
+#name = "algorithm18"
+#path = "exercises/easy/algorithm18.rs"
+#
+#[[bin]]
+#name = "algorithm19"
+#path = "exercises/easy/algorithm19.rs"
+#
+#[[bin]]
+#name = "algorithm20"
+#path = "exercises/easy/algorithm20.rs"
