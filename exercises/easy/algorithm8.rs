@@ -51,29 +51,41 @@ impl<T> Default for Queue<T> {
     }
 }
 
-pub struct myStack<T> {
-    //TODO
+pub struct MyStack<T> {
+    // 利用队列的先进先出的元素呼唤实现栈的先进后出特性
     q1: Queue<T>,
     q2: Queue<T>,
 }
-impl<T> myStack<T> {
+impl<T> MyStack<T> {
     pub fn new() -> Self {
         Self {
-            //TODO
             q1: Queue::<T>::new(),
             q2: Queue::<T>::new(),
         }
     }
     pub fn push(&mut self, elem: T) {
-        //TODO
+        if self.q1.is_empty() {
+            self.q1.enqueue(elem);
+        } else {
+            // 先将元素放入q2，再将q1中的元素全部放入q2，再将q2中的元素全部放入q1 实现先进后出特性
+            self.q2.enqueue(elem);
+            for _ in 0..self.q1.size() {
+                self.q2.enqueue(self.q1.dequeue().unwrap());
+            }
+            for _ in 0..self.q2.size() {
+                self.q1.enqueue(self.q2.dequeue().unwrap());
+            }
+        }
     }
     pub fn pop(&mut self) -> Result<T, &str> {
-        //TODO
-        Err("Stack is empty")
+        if !self.q1.is_empty() {
+            Ok(self.q1.dequeue().map_err(|_| "Queue is empty")?)
+        } else {
+            Err("Stack is empty")
+        }
     }
     pub fn is_empty(&self) -> bool {
-        //TODO
-        true
+        self.q1.is_empty() && self.q2.is_empty()
     }
 }
 
@@ -83,7 +95,7 @@ mod tests {
 
     #[test]
     fn test_queue() {
-        let mut s = myStack::<i32>::new();
+        let mut s = MyStack::<i32>::new();
         assert_eq!(s.pop(), Err("Stack is empty"));
         s.push(1);
         s.push(2);
