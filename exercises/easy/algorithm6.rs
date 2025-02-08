@@ -22,7 +22,16 @@ impl Graph {
     }
 
     fn dfs_util(&self, v: usize, visited: &mut HashSet<usize>, visit_order: &mut Vec<usize>) {
-        //TODO
+        if !visit_order.contains(&v) {
+            visit_order.push(v);
+        }
+        for &i in self.adj[v].iter() {
+            if !visited.contains(&i) {
+                visited.insert(i);
+                // 继续向下遍历
+                self.dfs_util(i, visited, visit_order);
+            }
+        }
     }
 
     // Perform a depth-first search on the graph, return the order of visited nodes
@@ -41,9 +50,9 @@ mod tests {
     #[test]
     fn test_dfs_simple() {
         let mut graph = Graph::new(3);
+        // 0 -> 1 -> 2
         graph.add_edge(0, 1);
         graph.add_edge(1, 2);
-
         let visit_order = graph.dfs(0);
         assert_eq!(visit_order, vec![0, 1, 2]);
     }
