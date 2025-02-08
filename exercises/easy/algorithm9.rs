@@ -8,7 +8,7 @@ use std::default::Default;
 
 pub struct Heap<T>
 where
-    T: Default,
+    T: Default + Ord,
 {
     count: usize,
     items: Vec<T>,
@@ -17,7 +17,7 @@ where
 
 impl<T> Heap<T>
 where
-    T: Default,
+    T: Default + Ord,
 {
     pub fn new(comparator: fn(&T, &T) -> bool) -> Self {
         Self {
@@ -36,7 +36,15 @@ where
     }
 
     pub fn add(&mut self, value: T) {
-        //TODO
+        self.count += 1;
+        let mut idx = 0;
+        for i in (0..self.count).rev() {
+            if (self.comparator)(&value, &self.items[i]) {
+                idx = i;
+                break;
+            }
+        }
+        self.items.insert(idx + 1, value);
     }
 
     fn parent_idx(&self, idx: usize) -> usize {
@@ -56,8 +64,13 @@ where
     }
 
     fn smallest_child_idx(&self, idx: usize) -> usize {
-        //TODO
-        0
+        let left_child_idx = self.left_child_idx(idx);
+        let right_child_idx = self.right_child_idx(idx);
+        if self.items[left_child_idx] < self.items[right_child_idx] {
+            left_child_idx
+        } else {
+            right_child_idx
+        }
     }
 }
 
@@ -78,13 +91,16 @@ where
 
 impl<T> Iterator for Heap<T>
 where
-    T: Default,
+    T: Default + Ord,
 {
     type Item = T;
 
     fn next(&mut self) -> Option<T> {
-        //TODO
-        None
+        if self.is_empty() {
+            return None;
+        }
+        self.count -= 1;
+        self.items.pop()
     }
 }
 
