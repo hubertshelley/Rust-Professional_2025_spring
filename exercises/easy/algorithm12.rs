@@ -12,8 +12,20 @@
 use std::fmt::{self, Display, Formatter};
 
 pub fn is_palindrome(s: String) -> bool {
-    // TODO: Implement the logic to check if the string is a palindrome
-    false // Placeholder return value
+    let s = s
+        .chars()
+        .filter(|c| *c as u8 >= b'a' && *c as u8 <= b'z' || *c as u8 >= b'A' && *c as u8 <= b'Z')
+        .map(|c| c.to_ascii_lowercase())
+        .collect::<String>();
+    let len = s.len() / 2;
+    // 取余用于向前倒数字母能获取到正确的字符
+    let len_rest = s.len() % 2;
+    for i in 0..len {
+        if s.chars().nth(i) != s.chars().nth(len * 2 - i + len_rest - 1) {
+            return false;
+        }
+    }
+    true
 }
 
 #[cfg(test)]
