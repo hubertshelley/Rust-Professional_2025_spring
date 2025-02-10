@@ -10,12 +10,38 @@
 
     Hint: You can start by sorting the intervals by their starting point and then merge them one by one.
 */
-
+use std::collections::HashMap;
 use std::fmt::{self, Display, Formatter};
 
 pub fn merge_intervals(intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
-    // TODO: Implement the logic to merge overlapping intervals
-    Vec::new() // Placeholder return value
+    let map = intervals
+        .iter()
+        .map(|i| (i[0], i[1]))
+        .collect::<HashMap<i32, i32>>();
+    let mut starts = map.keys().cloned().collect::<Vec<i32>>();
+    starts.sort();
+    let intervals = {
+        let mut result = vec![];
+        for start in starts {
+            result.push(vec![start, *map.get(&start).unwrap()])
+        }
+        result
+    };
+    let mut current_node = 0;
+    let mut result = vec![intervals[0].clone()];
+    for i in 1..intervals.len() {
+        if intervals[i][0] <= result[current_node][1] {
+            if intervals[i][1] > result[current_node][1] {
+                result[current_node][1] = intervals[i][1];
+            } else {
+                continue;
+            }
+        } else {
+            current_node += 1;
+            result.push(intervals[i].clone());
+        }
+    }
+    result
 }
 
 #[cfg(test)]
