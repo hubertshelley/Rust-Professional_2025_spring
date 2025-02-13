@@ -1,5 +1,6 @@
 // src/tests.rs
 mod district;
+mod graph_parser;
 
 #[cfg(test)]
 mod tests {
