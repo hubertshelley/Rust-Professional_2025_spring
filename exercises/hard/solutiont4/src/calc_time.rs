@@ -139,7 +139,7 @@ static A_2025_HOLIDAY: LazyLock<Vec<(Date, Date)>> = LazyLock::new(|| {
         (Date::new(2025, 1, 1), Date::new(2025, 1, 1)),
         (Date::new(2025, 1, 28), Date::new(2025, 2, 4)),
         (Date::new(2025, 4, 4), Date::new(2025, 4, 6)),
-        (Date::new(2025, 5, 1), Date::new(2025, 5, 6)),
+        (Date::new(2025, 5, 1), Date::new(2025, 5, 5)),
         (Date::new(2025, 5, 31), Date::new(2025, 6, 2)),
         (Date::new(2025, 10, 1), Date::new(2025, 10, 8)),
         (Date::new(2026, 1, 1), Date::new(2026, 1, 1)),
@@ -170,11 +170,14 @@ pub fn time_info(time: &str) -> String {
         .unwrap()
         - date;
     let weekday = date.weekday();
-    let week_number = if Date::new(date.year, 1, 1).weekday() == 0 {
-        date.day_of_year() / 7
-    } else {
-        date.day_of_year() / 7 + 1
-    };
+    let week_number =
+        if Date::new(date.year, 12, 31).weekday() <= 3 && date >= Date::new(date.year, 12, 29) {
+            1
+        } else if Date::new(date.year, 1, 1).weekday() == 1 {
+            date.day_of_year() / 7
+        } else {
+            date.day_of_year() / 7 + 1
+        };
     format!(
         "{},{},{},{},{},{}",
         week_number,
@@ -198,7 +201,7 @@ mod tests {
         let leap_year = Date::new(2000, 1, 2);
         assert_eq!(d2 - d1, 1);
         assert_eq!(d1 - d2, -1);
-        assert_eq!(today.weekday(), 0);
+        assert_eq!(today.weekday(), 7);
         assert_eq!(today.year_days(), 365);
         assert_eq!(leap_year.year_days(), 366);
         assert_eq!(d1.day_of_year(), 1);
